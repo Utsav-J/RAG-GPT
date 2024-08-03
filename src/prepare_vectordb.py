@@ -2,6 +2,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings.openai import OpenAIEmbeddings
 from langchain_community.document_loaders.pdf import PyPDFLoader
 import os
+from langchain.vectorstores.chroma import Chroma
+
 class PrepareVectorDB:
     def __init__(
             self,
@@ -33,6 +35,7 @@ class PrepareVectorDB:
         self.embedding_model_engine = OpenAIEmbeddings()
     
     def __load_all_documents(self) -> list :
+
         """
         
         """ 
@@ -55,3 +58,29 @@ class PrepareVectorDB:
             print(f"Number of documents loaded : {doc_count}")
             print(f"Number of pages : {len(docs)} \n\n")
         return docs
+    
+    def __chunk_documents(self, docs : list) -> list:
+        """
+        
+        """
+        print("Making chunks of documents")
+        chunked_documents = self.text_splitter.split_documents(docs)
+        print(f"Number of chunks created: {len(chunked_documents)} \n\n")
+        return chunked_documents
+    
+    def prepare_and_save_vectorDB(self):
+        """
+        
+        """
+        docs = self.__load_all_documents()
+        chunks = self.__chunk_documents(docs)
+        print("Preparing vector database")
+
+        vectorDB = Chroma.from_documents(
+            documents=chunks,
+            embedding=self.embedding_model_engine,
+            persist_directory=self.persist_directory
+        )
+        print("VectorDB has been created")
+        print(f"Number of documents in the database: {vectorDB._collection.count()} \n\n ")
+        return vectorDB
