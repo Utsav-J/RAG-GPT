@@ -1,6 +1,6 @@
 directories:
-  data_directory: data/docs
-  data_directory_2: data/docs_2
+  data_directory: data/docs1
+  data_directory_2: data/docs2
   persist_directory: data/vectordb/processed/chroma/
   custom_persist_directory: data/vectordb/uploaded/chroma/
 
@@ -22,7 +22,7 @@ llm_config:
     # User question:\n
     New question
     "
-    engine: "gpt-35-turbo"
+    engine: "gpt-35-turbo" 
     temperature: 0.0
     max_token: 4096
 
@@ -33,7 +33,6 @@ summarizer_config:
     summarizer_llm_system_role: "You are an expert text summarizer. You will receive a text and your task is to summarize and keep all the key information.\
       Kepp the maximum length of summary within {} number of tokens."
     final_summarizer_llm_system_role: "You are an expert text summarizer. You will receive a text and your task is to give a comprehensive summary and keep all the key information."
-
 
 splitter_config:
   chunk_size: 1500
